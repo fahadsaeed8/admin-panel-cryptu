@@ -3,6 +3,7 @@
 import React from "react";
 import DashboardLayout from "@/components/latest-dashboardLayout/dashboardlayout";
 import Table from "@/components/table/table"; // Assuming your Table component can handle different columns
+import { Search } from "lucide-react";
 
 type PendingTrade = {
   transactionId: string;
@@ -58,6 +59,28 @@ const TradeLogPending = () => {
             <h2 className="text-xl font-semibold text-gray-900">
               Approved Trades
             </h2>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="flex items-stretch border border-gray-300 rounded-md bg-white w-full md:w-72 overflow-hidden">
+              <input
+                type="text"
+                placeholder="Username Crypto..."
+                className="w-full text-sm outline-none py-3 px-2"
+              />
+              <div className="bg-[#2d33ff] flex items-center justify-center px-4">
+                <Search size={16} className="text-white" />
+              </div>
+            </div>
+            <div className="flex items-stretch border border-gray-300 rounded-md bg-white w-full md:w-72 overflow-hidden">
+              <input
+                type="text"
+                placeholder="Start Date - End Date"
+                className="w-full text-sm outline-none py-3 px-2"
+              />
+              <div className="bg-[#2d33ff] flex items-center justify-center px-4">
+                <Search size={16} className="text-white" />
+              </div>
+            </div>
           </div>
         </div>
 
