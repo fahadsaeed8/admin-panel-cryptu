@@ -86,11 +86,7 @@ export const sidebarRoutes = [
         href: "/deposits/all",
         icon: <ListChecks size={16} />,
       },
-      {
-        name: "Pending",
-        href: "/deposits/pending",
-        icon: <Clock size={16} />,
-      },
+      { name: "Pending", href: "/deposits/pending", icon: <Clock size={16} /> },
       {
         name: "Approved",
         href: "/deposits/approved",
@@ -101,11 +97,7 @@ export const sidebarRoutes = [
         href: "/deposits/successful",
         icon: <CheckSquare size={16} />,
       },
-      {
-        name: "Rejected",
-        href: "/deposits/rejected",
-        icon: <Ban size={16} />,
-      },
+      { name: "Rejected", href: "/deposits/rejected", icon: <Ban size={16} /> },
       {
         name: "Initiated",
         href: "/deposits/initiated",
@@ -144,5 +136,22 @@ export const sidebarRoutes = [
     name: "Report",
     href: "/report",
     icon: <FileText size={18} />,
+    subItems: [
+      {
+        name: "Transaction History",
+        href: "/report/transaction-history",
+        icon: <ListChecks size={16} />,
+      },
+      {
+        name: "Login History",
+        href: "/report/login-history",
+        icon: <Clock size={16} />,
+      },
+      {
+        name: "Notification History",
+        href: "/report/notification-history",
+        icon: <Bell size={16} />,
+      },
+    ],
   },
 ];
