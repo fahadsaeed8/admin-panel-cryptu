@@ -170,7 +170,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         </header>
 
         {/* Content Area */}
-        <main className="flex-1 p-4 bg-[#f4f4f4]">{children}</main>
+        <main className="flex-1 p-4 bg-[#f4f4f4] w-full">{children}</main>
       </div>
     </div>
   );

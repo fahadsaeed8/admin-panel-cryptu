@@ -35,6 +35,7 @@ import {
 import * as htmlToImage from "html-to-image";
 import { saveAs } from "file-saver";
 import LoginStats from "@/components/login-stats/LoginStats";
+import CronJobModal from "@/components/modals/CronJobModal";
 
 type RangeType = "week" | "month" | "year";
 
@@ -54,11 +55,11 @@ interface DataItem {
 
 const DashboardPage: React.FC = () => {
   const [range, setRange] = useState<RangeType>("week");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [startDate, setStartDate] = useState<string>("2025-10-29");
   const [endDate, setEndDate] = useState<string>("2025-11-12");
   const barRef = useRef<HTMLDivElement>(null);
   const areaRef = useRef<HTMLDivElement>(null);
-
   const stats: StatItem[] = [
     {
       title: "Total Users",
@@ -353,9 +354,16 @@ const DashboardPage: React.FC = () => {
       <div className="flex justify-between items-center mb-4 flex-wrap gap-3">
         <h1 className="text-2xl font-semibold text-gray-800">Dashboard</h1>
         <div className="flex items-center gap-3 flex-wrap">
-          <button className="border border-[#5e48e8] hover:bg-blue-500 text-[#5e48e8] hover:text-black cursor-pointer text-xs font-medium px-3 py-1.5 rounded-sm transition">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="border border-[#5e48e8] hover:bg-blue-500 text-[#5e48e8] hover:text-black cursor-pointer text-xs font-medium px-3 py-1.5 rounded-sm transition"
+          >
             🗒 Cron Setup
           </button>
+          <CronJobModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+          />
         </div>
       </div>
       <div className="bg-[#ffa64d] mb-5 text-black text-sm px-4 py-2 rounded-sm">
