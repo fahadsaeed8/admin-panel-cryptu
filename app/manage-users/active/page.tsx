@@ -37,42 +37,26 @@ const users: User[] = [
     timeAgo: "6 hours ago",
     balance: "INR 0.00",
   },
-  {
-    name: "999999 9999",
-    username: "ggggggggggg",
-    email: "afdafdsf234@gmail.com",
-    mobile: "",
-    country: "",
-    joinedAt: "2025-11-10 08:26 AM",
-    timeAgo: "8 hours ago",
-    balance: "INR 0.00",
-  },
 ];
 
 const ActiveUserPage = () => {
   const router = useRouter();
 
-  const handleDetails = (username: string) => {
-    router.push(`/manage-users/active/${username}`);
-  };
-
   return (
     <DashboardLayout>
-      <div>
-        {/* Header Section */}
+      <div className="p-4">
         <div className="flex flex-col md:flex-row gap-3 items-center justify-between mb-4">
-          <div>
-            <h2 className="text-xl font-semibold text-gray-900">All Users</h2>
-          </div>
+          <h2 className="text-xl font-semibold text-slate-800">All Users</h2>
         </div>
 
-        {/* Table Component */}
         <Table
           trades={users}
-          actionRenderer={(active: Record<string, any>, index: number) => (
+          actionRenderer={(user) => (
             <button
-              onClick={() => handleDetails(active.username)}
-              className="border border-[#2d33ff] text-[#2d33ff] px-3 py-1 rounded-md hover:bg-[#2d33ff] hover:text-white transition text-sm"
+              onClick={() =>
+                router.push(`/manage-users/active/${user.username}`)
+              }
+              className="border border-indigo-600 text-indigo-600 px-3 py-1 rounded-md hover:bg-indigo-600 hover:text-white transition text-sm"
             >
               Details
             </button>
