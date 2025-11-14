@@ -23,7 +23,7 @@ import {
 export const sidebarRoutes = [
   {
     name: "Dashboard",
-    href: "/latest-dashboard",
+    href: "/",
     icon: <LayoutDashboard size={18} />,
   },
   {
