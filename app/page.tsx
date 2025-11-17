@@ -35,6 +35,7 @@ import {
 import * as htmlToImage from "html-to-image";
 import { saveAs } from "file-saver";
 import LoginStats from "@/components/login-stats/LoginStats";
+import CronJobModal from "@/components/modals/CronJobModal";
 
 type RangeType = "week" | "month" | "year";
 
@@ -56,6 +57,7 @@ const DashboardPage: React.FC = () => {
   const [range, setRange] = useState<RangeType>("week");
   const [startDate, setStartDate] = useState<string>("2025-10-29");
   const [endDate, setEndDate] = useState<string>("2025-11-12");
+  const [isCronModalOpen, setIsCronModalOpen] = useState(false);
   const barRef = useRef<HTMLDivElement>(null);
   const areaRef = useRef<HTMLDivElement>(null);
 
@@ -353,7 +355,10 @@ const DashboardPage: React.FC = () => {
       <div className="flex justify-between items-center mb-4 flex-wrap gap-3">
         <h1 className="text-2xl font-semibold text-gray-800">Dashboard</h1>
         <div className="flex items-center gap-3 flex-wrap">
-          <button className="border border-[#5e48e8] hover:bg-blue-500 text-[#5e48e8] hover:text-black cursor-pointer text-xs font-medium px-3 py-1.5 rounded-sm transition">
+          <button
+            onClick={() => setIsCronModalOpen(true)}
+            className="border border-[#5e48e8] hover:bg-blue-500 text-[#5e48e8] hover:text-black cursor-pointer text-xs font-medium px-3 py-1.5 rounded-sm transition"
+          >
             🗒 Cron Setup
           </button>
         </div>
@@ -381,6 +386,106 @@ const DashboardPage: React.FC = () => {
             <div className="p-3 bg-gray-50 rounded-lg">{item.icon}</div>
           </div>
         ))}
+      </div>
+
+      {/* Deposits Section */}
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Deposits</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            {
+              icon: "💰",
+              title: "Total Deposited",
+              value: "INR 0.00",
+              color: "bg-green-100",
+            },
+            {
+              icon: "⏳",
+              title: "Pending Deposits",
+              value: "0",
+              color: "bg-yellow-100",
+            },
+            {
+              icon: "✕",
+              title: "Rejected Deposits",
+              value: "0",
+              color: "bg-red-100",
+            },
+            {
+              icon: "⚡",
+              title: "Deposited Charge",
+              value: "INR 0.00",
+              color: "bg-purple-100",
+            },
+          ].map((item, i) => (
+            <div
+              key={i}
+              className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all cursor-pointer"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <p className="text-sm text-gray-500 mb-2">{item.title}</p>
+                  <p className="text-xl font-semibold text-gray-800">
+                    {item.value}
+                  </p>
+                </div>
+                <div className={`${item.color} w-12 h-12 rounded-lg flex items-center justify-center text-xl`}>
+                  {item.icon}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Withdrawals Section */}
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Withdrawals</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[
+            {
+              icon: "💳",
+              title: "Total Withdrawn",
+              value: "INR 12,403,926.00",
+              color: "bg-green-100",
+            },
+            {
+              icon: "⏳",
+              title: "Pending Withdrawals",
+              value: "151",
+              color: "bg-yellow-100",
+            },
+            {
+              icon: "✕",
+              title: "Rejected Withdrawals",
+              value: "295",
+              color: "bg-red-100",
+            },
+            {
+              icon: "%",
+              title: "Withdrawal Charge",
+              value: "INR 0.00",
+              color: "bg-purple-100",
+            },
+          ].map((item, i) => (
+            <div
+              key={i}
+              className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all cursor-pointer"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <p className="text-sm text-gray-500 mb-2">{item.title}</p>
+                  <p className="text-xl font-semibold text-gray-800">
+                    {item.value}
+                  </p>
+                </div>
+                <div className={`${item.color} w-12 h-12 rounded-lg flex items-center justify-center text-xl`}>
+                  {item.icon}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Charts Section */}
@@ -498,6 +603,7 @@ const DashboardPage: React.FC = () => {
         </div>
         <LoginStats />
       </div>
+      <CronJobModal isOpen={isCronModalOpen} onClose={() => setIsCronModalOpen(false)} />
     </DashboardLayout>
   );
 };
