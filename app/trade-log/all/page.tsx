@@ -4,10 +4,11 @@ import React, { useState } from "react";
 import { Pencil, Search, X } from "lucide-react";
 import DashboardLayout from "@/components/latest-dashboardLayout/dashboardlayout";
 import Table from "@/components/table/table";
+import { useRouter } from "next/navigation";
 
 type Trade = {
   user: string;
-  username: string;
+  date: string;
   crypto: string;
   amount: string;
   inTime: string;
@@ -18,55 +19,143 @@ type Trade = {
 
 const initialTrades: Trade[] = [
   {
-    user: "Abhishek Kumar",
-    username: "abhishekkumar",
+    user: "abhishekkumar",
     crypto: "BTC",
     amount: "INR 1,000.00",
     inTime: "2025-08-31T09:18",
     highLow: "UP",
     result: "Loss",
     status: "Completed",
+    date: "2025-08-31",
   },
   {
-    user: "Amogh Khairav",
-    username: "amoghkhairav",
+    user: "amoghkhairav",
     crypto: "BTC",
     amount: "INR 600.00",
     inTime: "2025-08-31T07:32",
     highLow: "UP",
     result: "Loss",
     status: "Completed",
+    date: "2025-08-31",
   },
   {
-    user: "Sivagnanavathi Singh",
-    username: "sivagnanavathisingh",
+    user: "sivagnanavathisingh",
     crypto: "BTS",
     amount: "INR 5,000.00",
     inTime: "2025-08-30T17:03",
     highLow: "UP",
     result: "Win",
     status: "Completed",
+    date: "2025-08-30",
+  },
+  {
+    user: "sivagnanavathisingh",
+    crypto: "BTS",
+    amount: "INR 5,000.00",
+    inTime: "2025-08-30T17:03",
+    highLow: "UP",
+    result: "Win",
+    status: "Completed",
+    date: "2025-08-30",
+  },
+  {
+    user: "sivagnanavathisingh",
+    crypto: "BTS",
+    amount: "INR 5,000.00",
+    inTime: "2025-08-30T17:03",
+    highLow: "UP",
+    result: "Win",
+    status: "Completed",
+    date: "2025-08-30",
+  },
+  {
+    user: "sivagnanavathisingh",
+    crypto: "BTS",
+    amount: "INR 5,000.00",
+    inTime: "2025-08-30T17:03",
+    highLow: "UP",
+    result: "Win",
+    status: "Completed",
+    date: "2025-08-30",
+  },
+  {
+    user: "sivagnanavathisingh",
+    crypto: "BTS",
+    amount: "INR 5,000.00",
+    inTime: "2025-08-30T17:03",
+    highLow: "UP",
+    result: "Win",
+    status: "Completed",
+    date: "2025-08-30",
+  },
+  {
+    user: "sivagnanavathisingh",
+    crypto: "BTS",
+    amount: "INR 5,000.00",
+    inTime: "2025-08-30T17:03",
+    highLow: "UP",
+    result: "Win",
+    status: "Completed",
+    date: "2025-08-30",
+  },
+  {
+    user: "sivagnanavathisingh",
+    crypto: "BTS",
+    amount: "INR 5,000.00",
+    inTime: "2025-08-30T17:03",
+    highLow: "UP",
+    result: "Win",
+    status: "Completed",
+    date: "2025-08-30",
+  },
+  {
+    user: "sivagnanavathisingh",
+    crypto: "BTS",
+    amount: "INR 5,000.00",
+    inTime: "2025-08-30T17:03",
+    highLow: "UP",
+    result: "Win",
+    status: "Completed",
+    date: "2025-08-30",
   },
 ];
 
 const TradeLogAll = () => {
+  const router = useRouter();
+
   const [trades, setTrades] = useState<Trade[]>(initialTrades);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editTrade, setEditTrade] = useState<Trade | null>(null);
   const [editIndex, setEditIndex] = useState<number | null>(null);
 
-  // Open modal for editing
-  const handleEdit = (trade: Trade, index: number) => {
-    setEditTrade({ ...trade });
+  const modifiedTrades = trades.map((t) => ({
+    ...t,
+
+    user: (
+      <span
+        onClick={(e) => {
+          e.stopPropagation();
+          router.push(`/admin/users/${t.user}`);
+        }}
+        className="text-[#2d33ff] font-medium cursor-pointer cursor-pointer no-underline hover:text-[#1e26d9]"
+      >
+        {t.user}
+      </span>
+    ),
+  }));
+
+  const handleEdit = (index: number) => {
+    const tradeToEdit = trades[index];
+    setEditTrade({ ...tradeToEdit });
     setEditIndex(index);
     setIsModalOpen(true);
   };
 
-  // Save changes
+  // Save Edited Data
   const handleSave = () => {
     if (editTrade && editIndex !== null) {
       const updatedTrades = [...trades];
-      updatedTrades[editIndex] = editTrade;
+      updatedTrades[editIndex] = { ...editTrade };
       setTrades(updatedTrades);
       setIsModalOpen(false);
       setEditTrade(null);
@@ -108,11 +197,11 @@ const TradeLogAll = () => {
         <div className="overflow-x-auto">
           <div className="min-w-[1000px]">
             <Table
-              trades={trades}
+              trades={modifiedTrades}
               actionRenderer={(row, index) => (
                 <button
-                  onClick={() => handleEdit(row as Trade, index)}
-                  className="flex items-center gap-1 text-[#2d33ff] border border-[#2d33ff] px-3 py-1.5 rounded-md text-xs font-medium hover:bg-[#2d33ff] hover:text-white transition cursor-pointer"
+                  onClick={() => handleEdit(index)}
+                  className="flex items-center gap-1 text-[#2d33ff] no-underline border border-[#2d33ff] px-3 py-1.5 rounded-md text-xs font-medium hover:bg-[#2d33ff] hover:text-white transition cursor-pointer"
                 >
                   <Pencil size={14} /> Edit
                 </button>
@@ -136,31 +225,15 @@ const TradeLogAll = () => {
               <h2 className="text-lg font-semibold mb-4">Edit Trade</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* User */}
-                <div className="flex flex-col">
-                  <label className="text-sm font-medium text-gray-700">
-                    User
-                  </label>
-                  <input
-                    type="text"
-                    value={editTrade.user}
-                    onChange={(e) =>
-                      setEditTrade({ ...editTrade, user: e.target.value })
-                    }
-                    className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-[#2d33ff] focus:outline-none"
-                  />
-                </div>
-
-                {/* Username */}
                 <div className="flex flex-col">
                   <label className="text-sm font-medium text-gray-700">
                     Username
                   </label>
                   <input
                     type="text"
-                    value={editTrade.username}
+                    value={editTrade.user}
                     onChange={(e) =>
-                      setEditTrade({ ...editTrade, username: e.target.value })
+                      setEditTrade({ ...editTrade, user: e.target.value })
                     }
                     className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-[#2d33ff] focus:outline-none"
                   />
@@ -270,6 +343,20 @@ const TradeLogAll = () => {
                     <option value="Completed">Completed</option>
                     <option value="Incompleted">Incompleted</option>
                   </select>
+                </div>
+
+                <div className="flex flex-col">
+                  <label className="text-sm font-medium text-gray-700">
+                    Date
+                  </label>
+                  <input
+                    type="date"
+                    value={editTrade.date}
+                    onChange={(e) =>
+                      setEditTrade({ ...editTrade, date: e.target.value })
+                    }
+                    className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-[#2d33ff] focus:outline-none"
+                  />
                 </div>
               </div>
 

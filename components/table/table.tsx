@@ -10,88 +10,78 @@ type Props = {
 const Table: React.FC<Props> = ({ trades, actionRenderer }) => {
   const headers = trades.length > 0 ? Object.keys(trades[0]) : [];
 
-  // ✅ Function to conditionally style status-like text
-  const renderCellValue = (value: any) => {
-    if (typeof value !== "string") return String(value);
+  // Badge styles
+  const badgeClasses = (value: string) => {
+    const v = value?.toLowerCase();
 
-    const val = value.toLowerCase();
+    if (v === "up" || v === "win" || v === "completed")
+      return "bg-green-50 text-green-600 border border-green-400";
 
-    // --- Define styles for specific keywords ---
-    const styles: Record<string, { bg: string; text: string; border: string }> =
-      {
-        up: {
-          bg: "bg-green-50",
-          text: "text-green-600",
-          border: "border-green-400",
-        },
-        win: {
-          bg: "bg-green-50",
-          text: "text-green-600",
-          border: "border-green-400",
-        },
-        completed: {
-          bg: "bg-green-50",
-          text: "text-green-600",
-          border: "border-green-400",
-        },
-        down: {
-          bg: "bg-red-50",
-          text: "text-red-600",
-          border: "border-red-400",
-        },
-        loss: {
-          bg: "bg-red-50",
-          text: "text-red-600",
-          border: "border-red-400",
-        },
-        incompleted: {
-          bg: "bg-red-50",
-          text: "text-red-600",
-          border: "border-red-400",
-        },
-        draw: {
-          bg: "bg-gray-50",
-          text: "text-gray-600",
-          border: "border-gray-400",
-        },
-      };
+    if (v === "down" || v === "loss" || v === "incompleted")
+      return "bg-red-50 text-red-600 border border-red-400";
 
-    const matched = Object.keys(styles).find((key) => val === key);
+    return "bg-gray-50 text-gray-600 border border-gray-400";
+  };
 
-    if (matched) {
-      const s = styles[matched];
+  // Cell renderer (only styles, no structural change)
+  const renderCell = (key: string, value: any, row: any) => {
+    const v = String(value);
+
+    // Username column UI
+    if (key === "user") {
+      return (
+        <div>
+          <div className="font-medium text-gray-900">{row.user}</div>
+          <div className="text-blue-500 text-xs">{row.username}</div>
+        </div>
+      );
+    }
+
+    // Crypto column UI
+    if (key === "crypto") {
+      return (
+        <div className="flex flex-col items-start">
+          <span className="text-lg">฿</span>
+          <span className="text-[11px] text-gray-500 mt-[-2px]">BTC</span>
+        </div>
+      );
+    }
+
+    // Badge fields
+    if (["highLow", "result", "status"].includes(key)) {
       return (
         <span
-          className={`px-3 rounded-full text-xs font-medium border ${s.bg} ${s.text} ${s.border}`}
+          className={`px-3 py-[2px] rounded-full text-xs font-medium ${badgeClasses(
+            v
+          )}`}
         >
           {value}
         </span>
       );
     }
 
-    // Default return (normal text)
-    return value;
+    return v;
   };
 
   return (
-    <div className="bg-white rounded-md shadow-md rounded-t-md">
-      {/* Responsive Table Container */}
-      <div className="overflow-x-auto hide-scrollbar w-full rounded-t-md">
+    <div className="bg-white rounded-md shadow-md overflow-hidden">
+      <div className="overflow-x-auto hide-scrollbar">
         <table className="w-full text-sm md:text-[15px]">
-          <thead className="">
+          <thead>
             <tr className="bg-[#2d33ff] text-white text-left">
               {headers.map((header) => (
-                <th key={header} className="p-3 capitalize whitespace-nowrap">
+                <th
+                  key={header}
+                  className="p-3 capitalize whitespace-nowrap font-medium"
+                >
                   {header.replace(/([A-Z])/g, " $1")}
                 </th>
               ))}
-              {actionRenderer && (
-                <th className="p-3 text-center whitespace-nowrap">Action</th>
-              )}
+              {actionRenderer && <th className="p-3 text-center">Action</th>}
             </tr>
           </thead>
 
-          <tbody className="">
+          <tbody>
             {trades.length === 0 ? (
               <tr>
                 <td
@@ -108,13 +98,13 @@ const Table: React.FC<Props> = ({ trades, actionRenderer }) => {
                   className="hover:bg-orange-100 transition border-b border-gray-300 last:border-b-0"
                 >
                   {headers.map((key) => (
-                    <td key={key} className="px-3 py-2 whitespace-nowrap">
-                      {renderCellValue(trade[key])}
+                    <td key={key} className="px-3 py-3 whitespace-nowrap">
+                      {renderCell(key, trade[key], trade)}
                     </td>
                   ))}
 
                   {actionRenderer && (
-                    <td className="whitespace-nowrap">
+                    <td className="px-3 py-3 whitespace-nowrap">
                       {actionRenderer(trade, index)}
                     </td>
                   )}
