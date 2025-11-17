@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, X, Zap, Settings } from "lucide-react";
+import { Copy, X, Zap, Settings, Calendar } from "lucide-react";
 import Link from "next/link";
 
 export default function CronJobModal({
@@ -42,32 +42,35 @@ export default function CronJobModal({
         </button>
 
         {/* Modal Content */}
-        <div className="p-6 text-center">
-          <h2 className="text-lg font-semibold text-gray-800 mb-1">
-            Please Set Cron Job
-          </h2>
-          <p className="text-sm text-gray-500 mb-5">
+        <div className="p-6">
+          <div className="flex items-center mb-3">
+            <Calendar className="text-indigo-600 w-6 h-6 mr-2" />
+            <h2 className="text-xl font-semibold text-gray-800">
+              Please Set Cron Job
+            </h2>
+          </div>
+          <p className="text-sm text-gray-500 mb-6">
             Once per 5–10 minutes is ideal while once every minute is the best
             option
           </p>
 
           {/* Cron Command Box */}
-          <div className="border border-gray-200 rounded-md bg-gray-50 p-3 text-left flex items-center justify-between">
+          <div className="border border-gray-200 rounded-md bg-gray-50 p-4 text-left flex items-center justify-between mb-3">
             <code className="text-sm text-gray-800 font-mono truncate">
               {cronCommand}
             </code>
             <button
               onClick={handleCopy}
-              className="flex items-center gap-1 text-indigo-600 hover:text-indigo-800 transition text-sm font-medium cursor-pointer"
+              className="flex items-center gap-1 text-indigo-600 hover:text-indigo-800 transition text-sm font-medium cursor-pointer ml-4 whitespace-nowrap"
             >
-              <Copy size={14} />
+              <Copy size={16} />
               {copied ? "Copied" : "Copy"}
             </button>
           </div>
 
-          <div className="flex justify-between items-center text-xs text-gray-500 mt-2 mb-6">
-            <span>Cron Command</span>
-            <span>Last Cron Run: {lastRun} seconds ago</span>
+          <div className="flex justify-between items-center text-xs text-gray-500 mb-6 px-1">
+            <span className="font-semibold">Cron Command</span>
+            <span className="font-semibold">Last Cron Run: {lastRun} seconds ago</span>
           </div>
 
           {/* Buttons */}
