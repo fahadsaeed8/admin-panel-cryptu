@@ -86,7 +86,7 @@ const Table: React.FC<Props> = ({ trades, actionRenderer }) => {
                 </th>
               ))}
               {actionRenderer && (
-                <th className="p-3 text-center whitespace-nowrap">Action</th>
+                <th className="p-5 text-right whitespace-nowrap pr-22">Action</th>
               )}
             </tr>
           </thead>
@@ -114,7 +114,7 @@ const Table: React.FC<Props> = ({ trades, actionRenderer }) => {
                   ))}
 
                   {actionRenderer && (
-                    <td className="whitespace-nowrap">
+                    <td className="p-3 whitespace-nowrap text-right pr-6">
                       {actionRenderer(trade, index)}
                     </td>
                   )}

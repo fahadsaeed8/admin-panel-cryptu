@@ -65,12 +65,59 @@ const cryptosData: Crypto[] = [
   },
 ];
 
+  // Add missing coins from mock site
+  cryptosData.push(
+    {
+      id: 8,
+      name: "ADA",
+      icon: "/icons/ada.png", // Use actual icon if available
+      symbol: "ADA",
+      status: "Enabled",
+    },
+    {
+      id: 9,
+      name: "SUI",
+      icon: "/icons/sui.png", // Use actual icon if available
+      symbol: "SUI",
+      status: "Enabled",
+    },
+    {
+      id: 10,
+      name: "LTC",
+      icon: "/icons/ltc.png", // Use actual icon if available
+      symbol: "Ł",
+      status: "Enabled",
+    },
+    {
+      id: 11,
+      name: "ETC",
+      icon: "/icons/etc.png", // Use actual icon if available
+      symbol: "ETC",
+      status: "Enabled",
+    },
+    {
+      id: 12,
+      name: "BNB",
+      icon: "/icons/bnb.png", // Use actual icon if available
+      symbol: "BNB",
+      status: "Enabled",
+    },
+    {
+      id: 13,
+      name: "BTS",
+      icon: "/icons/bts.png", // Use actual icon if available
+      symbol: "BTS",
+      status: "Enabled",
+    }
+  );
+
 const CryptoCurrencyManagement = () => {
   const [cryptos, setCryptos] = useState<Crypto[]>(cryptosData);
   const [selectedCrypto, setSelectedCrypto] = useState<Crypto | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // --- Edit Modal ---
   const handleEditClick = (crypto: Crypto) => {
@@ -151,6 +198,12 @@ const CryptoCurrencyManagement = () => {
     );
   };
 
+  // --- Filter cryptos based on search ---
+  const filteredCryptos = cryptos.filter((crypto) =>
+    crypto.name.toLowerCase().startsWith(searchTerm.toLowerCase()) ||
+    crypto.symbol.toLowerCase().startsWith(searchTerm.toLowerCase())
+  );
+
   return (
     <DashboardLayout>
       <div>
@@ -164,6 +217,8 @@ const CryptoCurrencyManagement = () => {
               <input
                 type="text"
                 placeholder="Search Crypto, Network..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full text-sm outline-none py-3 px-2"
               />
               <div className="bg-[#2d33ff] flex items-center justify-center px-4">
@@ -191,7 +246,7 @@ const CryptoCurrencyManagement = () => {
               </tr>
             </thead>
             <tbody>
-              {cryptos.map((crypto, idx) => (
+              {filteredCryptos.map((crypto, idx) => (
                 <tr
                   key={crypto.id}
                   className={`border-b border-gray-200 ${
@@ -255,6 +310,18 @@ const CryptoCurrencyManagement = () => {
             </tbody>
           </table>
         </div>
+
+        {/* No Results Message */}
+        {filteredCryptos.length === 0 && (
+          <div className="text-center py-8 bg-white border border-gray-200 rounded-lg mt-4">
+            <p className="text-gray-500 text-lg font-medium">
+              Currency not found
+            </p>
+            <p className="text-gray-400 text-sm mt-1">
+              No cryptocurrencies match your search "{searchTerm}"
+            </p>
+          </div>
+        )}
 
         {/* Modal */}
         {isModalOpen && selectedCrypto && (

@@ -47,6 +47,16 @@ const initialTrades: Trade[] = [
     result: "Win",
     status: "Completed",
   },
+  {
+    user: "Rohan Pawar",
+    username: "rohanpawar",
+    crypto: "BTC",
+    amount: "INR 3,000.00",
+    inTime: "2025-11-20T07:14",
+    highLow: "UP",
+    result: "Draw",
+    status: "Completed",
+  },
 ];
 
 const TradeLogAll = () => {
@@ -54,11 +64,17 @@ const TradeLogAll = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editTrade, setEditTrade] = useState<Trade | null>(null);
   const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [dateRange, setDateRange] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 50;
 
   // Open modal for editing
   const handleEdit = (trade: Trade, index: number) => {
     setEditTrade({ ...trade });
-    setEditIndex(index);
+    // Calculate the actual index in the original trades array
+    const actualIndex = trades.indexOf(trade);
+    setEditIndex(actualIndex);
     setIsModalOpen(true);
   };
 
@@ -74,6 +90,27 @@ const TradeLogAll = () => {
     }
   };
 
+  const filteredTrades = trades.filter((trade) => {
+    const q = searchTerm.trim().toLowerCase();
+    if (!q) return true;
+    return (
+      trade.user.toLowerCase().includes(q) ||
+      trade.username.toLowerCase().includes(q) ||
+      trade.crypto.toLowerCase().includes(q)
+    );
+  });
+
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredTrades.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedTrades = filteredTrades.slice(startIndex, endIndex);
+
+  // Reset to page 1 when search changes
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, dateRange]);
+
   return (
     <DashboardLayout>
       <div>
@@ -85,6 +122,8 @@ const TradeLogAll = () => {
               <input
                 type="text"
                 placeholder="Username Crypto..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full text-sm outline-none py-3 px-2"
               />
               <div className="bg-[#2d33ff] flex items-center justify-center px-4">
@@ -95,6 +134,8 @@ const TradeLogAll = () => {
               <input
                 type="text"
                 placeholder="Start Date - End Date"
+                value={dateRange}
+                onChange={(e) => setDateRange(e.target.value)}
                 className="w-full text-sm outline-none py-3 px-2"
               />
               <div className="bg-[#2d33ff] flex items-center justify-center px-4">
@@ -105,23 +146,130 @@ const TradeLogAll = () => {
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto">
-          <div className="min-w-[1000px]">
-            <Table
-              trades={trades}
-              actionRenderer={(row, index) => (
-                <button
-                  onClick={() => handleEdit(row as Trade, index)}
-                  className="flex items-center gap-1 text-[#2d33ff] border border-[#2d33ff] px-3 py-1.5 rounded-md text-xs font-medium hover:bg-[#2d33ff] hover:text-white transition cursor-pointer"
-                >
-                  <Pencil size={14} /> Edit
-                </button>
-              )}
-            />
+        <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-[#2d33ff] text-white">
+                  <th className="px-4 py-3 text-left font-semibold">User</th>
+                  <th className="px-4 py-3 text-left font-semibold">Crypto</th>
+                  <th className="px-4 py-3 text-left font-semibold">Amount</th>
+                  <th className="px-4 py-3 text-left font-semibold">In Time</th>
+                  <th className="px-4 py-3 text-left font-semibold">High/Low</th>
+                  <th className="px-4 py-3 text-left font-semibold">Result</th>
+                  <th className="px-4 py-3 text-left font-semibold">Status</th>
+                  <th className="px-4 py-3 text-left font-semibold">Date</th>
+                  <th className="px-4 py-3 text-right font-semibold">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedTrades.length > 0 ? (
+                  paginatedTrades.map((trade, index) => (
+                    <tr key={index} className="border-b border-gray-200 hover:bg-gray-50 transition">
+                      <td className="px-4 py-3">
+                        <div className="flex flex-col">
+                          <span className="font-medium text-gray-800">{trade.user}</span>
+                          <a className="text-xs text-blue-600 font-semibold" href="#">{trade.username}</a>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex flex-col">
+                          <span className="font-semibold text-gray-800">{trade.crypto.charAt(0)}</span>
+                          <span className="text-xs text-gray-500">{trade.crypto}</span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 text-gray-800">{trade.amount}</td>
+                      <td className="px-4 py-3 text-gray-800">{trade.inTime}</td>
+                      <td className="px-4 py-3">
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${trade.highLow === "UP" ? "border-green-400 text-green-600 bg-green-50" : "border-red-400 text-red-600 bg-red-50"}`}>
+                          {trade.highLow}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${trade.result === "Win" ? "border-green-400 text-green-600 bg-green-50" : trade.result === "Loss" ? "border-red-400 text-red-600 bg-red-50" : "border-gray-400 text-gray-600 bg-gray-50"}`}>
+                          {trade.result}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="px-3 py-1 rounded-full text-xs font-semibold border border-green-400 text-green-600 bg-green-50">{trade.status}</span>
+                      </td>
+                      <td className="px-4 py-3 text-gray-800">{trade.inTime}</td>
+                      <td className="px-4 py-3 text-right">
+                        <button onClick={() => handleEdit(trade, index)} className="px-3 py-1.5 bg-[#2d33ff] text-white text-xs font-medium rounded hover:bg-[#1e26d9] transition">Edit</button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={9} className="px-4 py-6 text-center text-gray-500">No trades found</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
 
-        {/* Edit Modal */}
+        {/* Pagination Info and Controls */}
+        <div className="mt-4 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-gray-600">
+            Showing {startIndex + 1} to {Math.min(endIndex, filteredTrades.length)} of {filteredTrades.length} results
+          </p>
+          
+          {totalPages > 1 && (
+            <div className="flex items-center gap-2 flex-wrap justify-center md:justify-end">
+              {/* Previous button */}
+              <button
+                onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                disabled={currentPage === 1}
+                className="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition"
+              >
+                ‹
+              </button>
+
+              {/* Page numbers */}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                // Show first, last, current, and adjacent pages
+                if (
+                  page === 1 ||
+                  page === totalPages ||
+                  (page >= currentPage - 1 && page <= currentPage + 1)
+                ) {
+                  return (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`px-3 py-2 rounded-md text-sm font-medium transition ${
+                        page === currentPage
+                          ? "bg-[#2d33ff] text-white"
+                          : "border border-gray-300 text-gray-700 hover:bg-gray-50"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  );
+                }
+                // Show ellipsis between gaps
+                if (page === currentPage - 2 || page === currentPage + 2) {
+                  return (
+                    <span key={`ellipsis-${page}`} className="px-2 text-gray-500">
+                      …
+                    </span>
+                  );
+                }
+                return null;
+              })}
+
+              {/* Next button */}
+              <button
+                onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                disabled={currentPage === totalPages}
+                className="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition"
+              >
+                ›
+              </button>
+            </div>
+          )}
+        </div>
         {isModalOpen && editTrade && (
           <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
             <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl p-6 relative">

@@ -97,7 +97,7 @@ const TradeSetting = () => {
         <Table
           trades={tradeTimes}
           actionRenderer={(trade, index) => (
-            <div className="flex justify-center gap-3">
+            <div className="flex justify-end gap-3">
               <button
                 onClick={() => handleOpenModal(index)}
                 className="flex items-center gap-1 text-[#2d33ff] border border-[#2d33ff] px-3 py-1.5 rounded-md text-xs font-medium hover:bg-[#2d33ff] hover:text-white transition cursor-pointer"
