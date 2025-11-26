@@ -96,7 +96,7 @@ const UserDetailPage = () => {
       <div className="">
         <h2 className="text-2xl font-semibold text-slate-800 mb-6">
           User Detail –{" "}
-          <span className="text-cyan-600 font-bold">{username}</span>
+          <span className="text-cyan-600 font-semibold">{user.firstName} {user.lastName}</span>
         </h2>
 
         {/* Summary Cards */}

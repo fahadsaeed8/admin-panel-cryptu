@@ -25,10 +25,17 @@ const Table: React.FC<Props> = ({ trades, actionRenderer }) => {
 
   // Cell renderer (only styles, no structural change)
   const renderCell = (key: string, value: any, row: any) => {
+    // If the value is a React element, render it directly (allows JSX cells)
+    if (React.isValidElement(value)) return value;
+
     const v = String(value);
 
     // Username column UI
     if (key === "user") {
+      // If user cell already contains JSX (two-line UI), render it directly
+      if (React.isValidElement(row.user)) return row.user;
+
+      // Otherwise render full name + username (username shown underneath)
       return (
         <div>
           <div className="font-medium text-gray-900">{row.user}</div>

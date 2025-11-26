@@ -4,12 +4,23 @@ import React from "react";
 import DashboardLayout from "@/components/latest-dashboardLayout/dashboardlayout";
 import { Search } from "lucide-react";
 
-const DepositHistory = () => {
+type Deposit = {
+  transactionId: string;
+  user: string;
+  amount: string;
+  conversation: string;
+  status: string;
+  action: string;
+};
+
+const initiatedData: Deposit[] = []; // empty → will show “Data not found”
+
+const InitiatedDeposits = () => {
   return (
     <DashboardLayout>
       <div className="w-full">
 
-        {/* 🔍 Search Section */}
+        {/* 🔍 Search Filters */}
         <div className="flex flex-col md:flex-row gap-3 items-center justify-end mb-6">
           <div className="flex items-stretch border border-gray-300 rounded-md bg-white w-full md:w-72 overflow-hidden">
             <input
@@ -34,37 +45,13 @@ const DepositHistory = () => {
           </div>
         </div>
 
-        {/* 📊 Top Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-
-          <SummaryCard
-            amount="INR 0.00"
-            label="Successful Deposit"
-            icon="✅"
-          />
-
-          <SummaryCard
-            amount="INR 0.00"
-            label="Pending Deposit"
-            icon="⏳"
-          />
-
-          <SummaryCard
-            amount="INR 0.00"
-            label="Rejected Deposit"
-            icon="⛔"
-          />
-
-          <SummaryCard
-            amount="INR 0.00"
-            label="Initiated Deposit"
-            icon="💳"
-          />
-
-        </div>
+        {/* 🔵 Page Heading (matches all deposit pages) */}
+        <h1 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4">
+          Initiated Deposits
+        </h1>
 
         {/* 📄 Table */}
-        <div className="bg-white rounded-lg shadow">
+        <div className="bg-white rounded-lg shadow overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-[#2d33ff] text-white text-sm">
@@ -78,16 +65,41 @@ const DepositHistory = () => {
               </tr>
             </thead>
 
-            {/* Empty State */}
             <tbody>
-              <tr>
-                <td
-                  colSpan={7}
-                  className="text-center text-gray-500 py-8 text-sm"
-                >
-                  Data not found
-                </td>
-              </tr>
+              {initiatedData.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={7}
+                    className="text-center text-gray-500 py-10 text-sm"
+                  >
+                    No initiated deposits found
+                  </td>
+                </tr>
+              ) : (
+                initiatedData.map((item, index) => (
+                  <tr
+                    key={index}
+                    className="border-b hover:bg-gray-50 transition"
+                  >
+                    <td className="py-3 px-4">{item.transactionId}</td>
+                    <td className="py-3 px-4">--</td>
+                    <td className="py-3 px-4">{item.user}</td>
+                    <td className="py-3 px-4">{item.amount}</td>
+                    <td className="py-3 px-4">{item.conversation}</td>
+
+                    {/* Status Badge */}
+                    <td className="py-3 px-4">
+                      <span className="px-3 py-1 text-xs rounded-full bg-blue-100 text-blue-700">
+                        Initiated
+                      </span>
+                    </td>
+
+                    <td className="py-3 px-4 text-blue-600 cursor-pointer">
+                      View
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -97,24 +109,4 @@ const DepositHistory = () => {
   );
 };
 
-export default DepositHistory;
-
-/* ====================== Summary Card Component ==================== */
-
-const SummaryCard = ({
-  amount,
-  label,
-  icon,
-}: {
-  amount: string;
-  label: string;
-  icon: string;
-}) => (
-  <div className="bg-white rounded-lg p-4 flex items-center gap-4 shadow-sm">
-    <div className="text-3xl">{icon}</div>
-    <div>
-      <p className="text-lg font-semibold">{amount}</p>
-      <p className="text-sm text-gray-500">{label}</p>
-    </div>
-  </div>
-);
+export default InitiatedDeposits;

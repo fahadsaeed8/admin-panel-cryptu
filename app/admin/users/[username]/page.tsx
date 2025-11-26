@@ -16,23 +16,37 @@ interface Props {
 }
 
 export default function UserDetailPageClient() {
-  const [firstName, setFirstName] = useState("Baskaran");
-  const [lastName, setLastName] = useState("Ponnusamy");
-  const [email, setEmail] = useState("baskaran.pon@gmail.com");
+  // Small mock lookup so profile page can show the correct fields
+  const MOCK_USERS: Record<
+    string,
+    { firstName: string; lastName: string; email: string; freezeAmount?: string; score?: string }
+  > = {
+    abhishekkumar: { firstName: "Abhishek", lastName: "Kumar", email: "abhishek.kumar@example.com", freezeAmount: "0", score: "100" },
+    amoghkhairav: { firstName: "Amogh", lastName: "Khairav", email: "amogh.k@example.com", freezeAmount: "0", score: "100" },
+    sivagnanavathisingh: { firstName: "Sivagnanavathi", lastName: "Singh", email: "sivagna@example.com", freezeAmount: "0", score: "100" },
+  };
+
+  const params = useParams(); // get all route params
+  const username = params?.username as string | undefined; // dynamic route
+
+  const userFromMock = username ? MOCK_USERS[username] : undefined;
+
+  const [firstName, setFirstName] = useState(userFromMock?.firstName ?? "");
+  const [lastName, setLastName] = useState(userFromMock?.lastName ?? "");
+  const [email, setEmail] = useState(userFromMock?.email ?? "");
   // const [referralLink] = useState(
   //   `https://cryptostackonline.com?reference=${username}`
   // );
-  const [freezeAmount, setFreezeAmount] = useState("0");
-  const [score, setScore] = useState("100");
+  const [freezeAmount, setFreezeAmount] = useState(userFromMock?.freezeAmount ?? "0");
+  const [score, setScore] = useState(userFromMock?.score ?? "100");
 
-  const params = useParams(); // get all route params
-  const username = params?.username; // dynamic route ka username
+
 
   return (
     <DashboardLayout>
       <div className="flex justify-between items-center mb-4 px-6 flex-wrap gap-3">
-        <h1 className="text-2xl font-semibold text-gray-800">
-          {username || "USERNAME MISSING"}
+        <h1 className="text-2xl font-bold text-gray-800">
+          {(firstName || lastName) ? `${firstName} ${lastName}`.trim() : (username || "USERNAME MISSING")}
         </h1>
 
         <div className="flex items-center gap-3 flex-wrap">
@@ -113,7 +127,7 @@ export default function UserDetailPageClient() {
         {/* === User Info Section === */}
         <div className="bg-white p-5 rounded-lg shadow-sm border">
           <h2 className="font-semibold text-lg mb-4">
-            Information of {username}
+            Information of {(firstName || lastName) ? `${firstName} ${lastName}`.trim() : username}
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
