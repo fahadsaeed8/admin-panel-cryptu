@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 
 type Trade = {
   user: string;
+  username?: string;
   date: string;
   crypto: string;
   amount: string;
@@ -19,104 +20,114 @@ type Trade = {
 
 const initialTrades: Trade[] = [
   {
-    user: "abhishekkumar",
+    user: "Abhishek Kumar",
+    username: "abhishekkumar",
     crypto: "BTC",
     amount: "INR 1,000.00",
-    inTime: "2025-08-31T09:18",
+    inTime: "2025-08-31T 09:18 AM",
     highLow: "UP",
     result: "Loss",
     status: "Completed",
-    date: "2025-08-31",
+    date: "2025-08-31 AM",
   },
   {
-    user: "amoghkhairav",
+    user: "Amogh Khairav",
+    username: "amoghkhairav",
     crypto: "BTC",
     amount: "INR 600.00",
-    inTime: "2025-08-31T07:32",
+    inTime: "2025-08-31T 07:32 AM",
     highLow: "UP",
     result: "Loss",
     status: "Completed",
-    date: "2025-08-31",
+    date: "2025-08-31 AM",
   },
   {
-    user: "sivagnanavathisingh",
+    user: "Sivagnanavathi Singh",
+    username: "sivagnanavathisingh",
     crypto: "BTS",
     amount: "INR 5,000.00",
-    inTime: "2025-08-30T17:03",
+    inTime: "2025-08-30T 17:03 AM",
     highLow: "UP",
     result: "Win",
     status: "Completed",
-    date: "2025-08-30",
+    date: "2025-08-30 AM",
   },
   {
-    user: "sivagnanavathisingh",
+    user: "Sivagnanavathi Singh",
+    username: "sivagnanavathisingh",
     crypto: "BTS",
     amount: "INR 5,000.00",
-    inTime: "2025-08-30T17:03",
+    inTime: "2025-08-30T 17:03 AM",
     highLow: "UP",
     result: "Win",
     status: "Completed",
-    date: "2025-08-30",
+    date: "2025-08-30 AM",
   },
   {
-    user: "sivagnanavathisingh",
+    user: "Sivagnanavathi Singh",
+    username: "sivagnanavathisingh",
     crypto: "BTS",
     amount: "INR 5,000.00",
-    inTime: "2025-08-30T17:03",
+    inTime: "2025-08-30T 17:03 AM",
     highLow: "UP",
     result: "Win",
     status: "Completed",
-    date: "2025-08-30",
+    date: "2025-08-30 AM",
   },
   {
-    user: "sivagnanavathisingh",
+    user: "Sivagnanavathi Singh",
+    username: "sivagnanavathisingh",
     crypto: "BTS",
     amount: "INR 5,000.00",
-    inTime: "2025-08-30T17:03",
+    inTime: "2025-08-30T 17:03 AM",
     highLow: "UP",
     result: "Win",
     status: "Completed",
-    date: "2025-08-30",
+    date: "2025-08-30 AM",
   },
   {
-    user: "sivagnanavathisingh",
+    user: "Sivagnanavathi Singh",
+    username: "sivagnanavathisingh",
     crypto: "BTS",
     amount: "INR 5,000.00",
-    inTime: "2025-08-30T17:03",
+    inTime: "2025-08-30T 17:03 AM",
     highLow: "UP",
     result: "Win",
     status: "Completed",
-    date: "2025-08-30",
+    date: "2025-08-30 AM",
   },
   {
-    user: "sivagnanavathisingh",
+    user: "Sivagnanavathi Singh",
+    username: "sivagnanavathisingh",
     crypto: "BTS",
     amount: "INR 5,000.00",
-    inTime: "2025-08-30T17:03",
+    inTime: "2025-08-30T 17:03 AM",
     highLow: "UP",
     result: "Win",
     status: "Completed",
-    date: "2025-08-30",
+    date: "2025-08-30 AM",
   },
   {
-    user: "sivagnanavathisingh",
+    user: "Sivagnanavathi Singh",
+    username: "sivagnanavathisingh",
     crypto: "BTS",
     amount: "INR 5,000.00",
-    inTime: "2025-08-30T17:03",
+    inTime: "2025-08-30T 17:03 AM",
     highLow: "UP",
     result: "Win",
     status: "Completed",
-    date: "2025-08-30",
+    date: "2025-08-30 AM",
   },
   {
-    user: "sivagnanavathisingh",
+    user: "Sivagnanavathi Singh",
+    username: "sivagnanavathisingh",
     crypto: "BTS",
     amount: "INR 5,000.00",
-    inTime: "2025-08-30T17:03",
+    inTime: "2025-08-30T 17:03 AM",
     highLow: "UP",
     result: "Win",
     status: "Completed",
-    date: "2025-08-30",
+    date: "2025-08-30 AM",
   },
 ];
 
@@ -128,21 +139,27 @@ const TradeLogAll = () => {
   const [editTrade, setEditTrade] = useState<Trade | null>(null);
   const [editIndex, setEditIndex] = useState<number | null>(null);
 
-  const modifiedTrades = trades.map((t) => ({
-    ...t,
+  const modifiedTrades = trades.map((t) => {
+    // remove the raw `username` key and instead embed it under the `user` cell
+    const { username, ...rest } = t as any;
 
-    user: (
-      <span
-        onClick={(e) => {
-          e.stopPropagation();
-          router.push(`/admin/users/${t.user}`);
-        }}
-        className="text-[#2d33ff] font-medium cursor-pointer cursor-pointer no-underline hover:text-[#1e26d9]"
-      >
-        {t.user}
-      </span>
-    ),
-  }));
+    const userCell = (
+      <div className="flex flex-col">
+        <span className="font-semibold">{t.user}</span>
+        <span
+          onClick={(e) => {
+            e.stopPropagation();
+            if (username) router.push(`/admin/users/${username}`);
+          }}
+          className="text-xs text-blue-600 font-semibold cursor-pointer no-underline hover:text-[#1e26d9]"
+        >
+          {username ?? t.user}
+        </span>
+      </div>
+    );
+
+    return { ...rest, user: userCell } as Record<string, any>;
+  });
 
   const handleEdit = (index: number) => {
     const tradeToEdit = trades[index];
@@ -226,15 +243,21 @@ const TradeLogAll = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col">
-                  <label className="text-sm font-medium text-gray-700">
-                    Username
-                  </label>
+                  <label className="text-sm font-medium text-gray-700">User</label>
                   <input
                     type="text"
                     value={editTrade.user}
-                    onChange={(e) =>
-                      setEditTrade({ ...editTrade, user: e.target.value })
-                    }
+                    onChange={(e) => setEditTrade({ ...editTrade, user: e.target.value })}
+                    className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-[#2d33ff] focus:outline-none"
+                  />
+                </div>
+
+                <div className="flex flex-col">
+                  <label className="text-sm font-medium text-gray-700">Username</label>
+                  <input
+                    type="text"
+                    value={(editTrade as any).username || ''}
+                    onChange={(e) => setEditTrade({ ...editTrade, username: e.target.value })}
                     className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:ring-2 focus:ring-[#2d33ff] focus:outline-none"
                   />
                 </div>

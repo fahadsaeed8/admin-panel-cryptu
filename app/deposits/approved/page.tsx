@@ -2,93 +2,74 @@
 
 import React from "react";
 import DashboardLayout from "@/components/latest-dashboardLayout/dashboardlayout";
-import Table from "@/components/table/table"; // Assuming your Table component can handle different columns
 import { Search } from "lucide-react";
 
-type PendingTrade = {
-  transactionId: string;
-  user: string;
-  amount: string;
-  conversation: string;
-  status: "Pending" | "In Progress";
-  action: "";
-};
-
-const pendingTrades: PendingTrade[] = [
-  {
-    transactionId: "TXN1001",
-    user: "Sivagnanavathi Singh",
-    amount: "INR 5,000.00",
-    conversation: "Crypto query regarding BTS",
-    status: "Pending",
-    action: "",
-  },
-  {
-    transactionId: "TXN1002",
-    user: "Pankaj Giri",
-    amount: "INR 1,000.00",
-    conversation: "BTC transaction confirmation",
-    status: "Pending",
-    action: "",
-  },
-  {
-    transactionId: "TXN1003",
-    user: "Anjali Verma",
-    amount: "INR 900.00",
-    conversation: "XRP payment pending",
-    status: "In Progress",
-    action: "",
-  },
-  {
-    transactionId: "TXN1004",
-    user: "Priya Nair",
-    amount: "INR 1,200.00",
-    conversation: "ETH payment verification",
-    status: "Pending",
-    action: "",
-  },
-];
-
-const TradeLogPending = () => {
+const ApprovedTrades = () => {
   return (
     <DashboardLayout>
-      <div>
-        {/* Header Section */}
-        <div className="flex flex-col md:flex-row gap-3 items-center justify-between mb-4">
-          <div>
-            <h2 className="text-xl font-semibold text-gray-900">
-              Approved Trades
-            </h2>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="flex items-stretch border border-gray-300 rounded-md bg-white w-full md:w-72 overflow-hidden">
-              <input
-                type="text"
-                placeholder="Username Crypto..."
-                className="w-full text-sm outline-none py-3 px-2"
-              />
-              <div className="bg-[#2d33ff] flex items-center justify-center px-4">
-                <Search size={16} className="text-white" />
-              </div>
+      <div className="w-full">
+
+        {/* 🔍 Search Section */}
+        <div className="flex flex-col md:flex-row gap-3 items-center justify-end mb-6">
+          <div className="flex items-stretch border border-gray-300 rounded-md bg-white w-full md:w-72 overflow-hidden">
+            <input
+              type="text"
+              placeholder="Username / Email"
+              className="w-full text-sm outline-none py-3 px-2"
+            />
+            <div className="bg-[#2d33ff] flex items-center justify-center px-4">
+              <Search size={16} className="text-white" />
             </div>
-            <div className="flex items-stretch border border-gray-300 rounded-md bg-white w-full md:w-72 overflow-hidden">
-              <input
-                type="text"
-                placeholder="Start Date - End Date"
-                className="w-full text-sm outline-none py-3 px-2"
-              />
-              <div className="bg-[#2d33ff] flex items-center justify-center px-4">
-                <Search size={16} className="text-white" />
-              </div>
+          </div>
+
+          <div className="flex items-stretch border border-gray-300 rounded-md bg-white w-full md:w-72 overflow-hidden">
+            <input
+              type="text"
+              placeholder="Start Date - End Date"
+              className="w-full text-sm outline-none py-3 px-2"
+            />
+            <div className="bg-[#2d33ff] flex items-center justify-center px-4">
+              <Search size={16} className="text-white" />
             </div>
           </div>
         </div>
 
-        {/* Table Component */}
-        <Table trades={pendingTrades} />
+        {/* 🔵 Heading (Matches Deposit History Style) */}
+        <h1 className="text-2xl font-semibold text-gray-900 mb-4">
+          Approved
+        </h1>
+
+        {/* 📄 Table */}
+        <div className="bg-white rounded-lg shadow">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-[#2d33ff] text-white text-sm">
+                <th className="py-3 px-4">Gateway | Transaction</th>
+                <th className="py-3 px-4">Initiated</th>
+                <th className="py-3 px-4">User</th>
+                <th className="py-3 px-4">Amount</th>
+                <th className="py-3 px-4">Conversion</th>
+                <th className="py-3 px-4">Status</th>
+                <th className="py-3 px-4">Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td
+                  colSpan={7}
+                  className="text-center text-gray-500 py-8 text-sm"
+                >
+                  Data not found
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
       </div>
     </DashboardLayout>
   );
 };
 
-export default TradeLogPending;
+export default ApprovedTrades;
