@@ -192,25 +192,26 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 
             {/* Dropdown Menu */}
             {openMenus.adminDropdown && (
-              <div className="absolute top-full py-2 right-0 mt-2 bg-white text-black rounded-md shadow-lg w-44 z-50">
-                <Link
-                  href="/settings"
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium hover:bg-gray-100"
-                  onClick={() =>
-                    setOpenMenus((prev) => ({ ...prev, adminDropdown: false }))
-                  }
-                >
-                  <Settings size={16} /> Profile
-                </Link>
-                <Link
-                  href="/settings"
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium hover:bg-gray-100"
-                  onClick={() =>
-                    setOpenMenus((prev) => ({ ...prev, adminDropdown: false }))
-                  }
-                >
-                  <Lock size={16} /> Password
-                </Link>
+  <div className="absolute top-full py-2 right-0 mt-2 bg-white text-black rounded-md shadow-lg w-44 z-50">
+    <Link
+      href="/profile"
+      className="flex items-center gap-2 px-4 py-2 text-sm font-medium hover:bg-gray-100"
+      onClick={() =>
+        setOpenMenus((prev) => ({ ...prev, adminDropdown: false }))
+      }
+    >
+      <Settings size={16} /> Profile
+    </Link>
+    <Link
+      href="/password"
+      className="flex items-center gap-2 px-4 py-2 text-sm font-medium hover:bg-gray-100"
+      onClick={() =>
+        setOpenMenus((prev) => ({ ...prev, adminDropdown: false }))
+      }
+    >
+      <Lock size={16} /> Password
+    </Link>
+
                 <button
                   className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 w-full text-left"
                   onClick={() => {
