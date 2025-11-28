@@ -15,7 +15,7 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-400 via-blue-800 to-gray-900 px-4">
       <form
         onSubmit={handleForgot}
         className="w-full max-w-md bg-white p-6 rounded-xl shadow"
