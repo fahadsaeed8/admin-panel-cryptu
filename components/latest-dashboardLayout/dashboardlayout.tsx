@@ -163,9 +163,50 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               />
             </div>
           </div>
-          <div className="flex items-center space-x-3">
-            <UserCircle size={28} className="text-white" />
-            <span className="text-sm font-medium hidden md:block">admin</span>
+
+          {/* Admin Dropdown Wrapper */}
+          <div className="relative">
+            <div
+              className="flex items-center space-x-2 cursor-pointer"
+              onClick={() =>
+                setOpenMenus((prev) => ({
+                  ...prev,
+                  adminDropdown: !prev.adminDropdown,
+                }))
+              }
+            >
+              <UserCircle size={28} className="text-white" />
+              <span className="text-sm font-medium hidden md:block text-white">
+                admin
+              </span>
+            </div>
+
+            {/* Dropdown Menu */}
+            {openMenus.adminDropdown && (
+              <div className="absolute top-full py-2 right-0 mt-2 bg-white text-black rounded-md shadow-lg w-36 z-50">
+                <Link
+                  href="/settings"
+                  className="block px-4 py-2 text-sm font-medium hover:bg-gray-100"
+                  onClick={() =>
+                    setOpenMenus((prev) => ({ ...prev, adminDropdown: false }))
+                  }
+                >
+                  Settings
+                </Link>
+                <button
+                  className="block px-4 py-2 text-sm hover:bg-gray-100 w-full text-left"
+                  onClick={() => {
+                    // Remove token from localStorage or cookies
+                    localStorage.removeItem("authToken");
+
+                    // Redirect to login page
+                    window.location.href = "/auth/login";
+                  }}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
         </header>
 
