@@ -3,7 +3,16 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Search, UserCircle, ChevronDown, Menu, X } from "lucide-react";
+import {
+  Search,
+  UserCircle,
+  ChevronDown,
+  Menu,
+  X,
+  Settings,
+  Lock,
+  LogOut,
+} from "lucide-react";
 import { sidebarRoutes } from "./sidebarRoutes";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
@@ -164,8 +173,8 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
           </div>
 
-          {/* Admin Dropdown Wrapper */}
           <div className="relative">
+            {/* Admin Dropdown Wrapper */}
             <div
               className="flex items-center space-x-2 cursor-pointer"
               onClick={() =>
@@ -183,27 +192,33 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 
             {/* Dropdown Menu */}
             {openMenus.adminDropdown && (
-              <div className="absolute top-full py-2 right-0 mt-2 bg-white text-black rounded-md shadow-lg w-36 z-50">
+              <div className="absolute top-full py-2 right-0 mt-2 bg-white text-black rounded-md shadow-lg w-44 z-50">
                 <Link
                   href="/settings"
-                  className="block px-4 py-2 text-sm font-medium hover:bg-gray-100"
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium hover:bg-gray-100"
                   onClick={() =>
                     setOpenMenus((prev) => ({ ...prev, adminDropdown: false }))
                   }
                 >
-                  Settings
+                  <Settings size={16} /> Profile
+                </Link>
+                <Link
+                  href="/settings"
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium hover:bg-gray-100"
+                  onClick={() =>
+                    setOpenMenus((prev) => ({ ...prev, adminDropdown: false }))
+                  }
+                >
+                  <Lock size={16} /> Password
                 </Link>
                 <button
-                  className="block px-4 py-2 text-sm hover:bg-gray-100 w-full text-left"
+                  className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 w-full text-left"
                   onClick={() => {
-                    // Remove token from localStorage or cookies
-                    localStorage.removeItem("authToken");
-
-                    // Redirect to login page
-                    window.location.href = "/auth/login";
+                    localStorage.removeItem("authToken"); // remove token
+                    window.location.href = "/auth/login"; // redirect
                   }}
                 >
-                  Logout
+                  <LogOut size={16} /> Logout
                 </button>
               </div>
             )}
