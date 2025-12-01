@@ -6,7 +6,7 @@ import DashboardLayout from "@/components/latest-dashboardLayout/dashboardlayout
 const ProfilePage = () => {
   const [name, setName] = useState("Super Admin");
   const [email, setEmail] = useState("ahmadop1205@gmail.com");
-  const [preview, setPreview] = useState("/logo-placeholder.png");
+  const [preview, setPreview] = useState<string | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -20,19 +20,18 @@ const ProfilePage = () => {
   return (
     <DashboardLayout>
       <div className="px-6 py-6 bg-[#f5f7fb] min-h-screen">
-        
         {/* PAGE TITLE */}
         <h1 className="text-xl font-semibold text-gray-800 mb-4">Profile</h1>
 
         <div className="flex items-start justify-between">
-          
-
           <div className="bg-white rounded-xl shadow-md w-[300px]">
             <div className="bg-[#3b44ff] px-6 py-5 flex items-center gap-4">
               <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center">
-                <div className="w-10 h-10 rounded-full bg-[#001547] flex items-center justify-center">
-                  <span className="text-white text-xl font-bold">✓</span>
-                </div>
+                <img
+                  src={"/profile-img.png"}
+                  alt="Profile"
+                  className="object-contain w-10 h-10"
+                />
               </div>
               <div className="text-white">
                 <p className="text-lg font-semibold leading-tight">Super</p>
@@ -61,7 +60,6 @@ const ProfilePage = () => {
           </div>
 
           <div className="flex-1 ml-6">
-
             <div className="flex justify-end mb-4">
               <a
                 href="/password"
@@ -72,15 +70,12 @@ const ProfilePage = () => {
             </div>
 
             <div className="bg-white rounded-xl shadow-md p-6">
-
               <h2 className="text-lg font-semibold text-gray-900 mb-4">
                 Profile Information
               </h2>
 
               <form className="space-y-6">
-
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
                   {/* IMAGE */}
                   <div>
                     <label className="block text-sm text-gray-700 mb-2">
@@ -90,7 +85,7 @@ const ProfilePage = () => {
                     <div className="relative bg-[#fafbff] border border-gray-200 rounded-xl flex items-center justify-center overflow-hidden">
                       <div className="w-full max-w-[350px] aspect-square bg-white flex items-center justify-center">
                         <img
-                          src={preview}
+                          src={preview ? preview : "/profile-img.png"}
                           alt="Profile"
                           className="object-contain max-w-full max-h-full"
                         />
@@ -108,7 +103,8 @@ const ProfilePage = () => {
                     </div>
 
                     <p className="text-xs text-gray-500 mt-2">
-                      Supported Files: <b>.png</b>, <b>.jpg</b>, <b>.jpeg</b> — resized to <b>400×400px</b>
+                      Supported Files: <b>.png</b>, <b>.jpg</b>, <b>.jpeg</b> —
+                      resized to <b>400×400px</b>
                     </p>
                   </div>
 
@@ -146,7 +142,6 @@ const ProfilePage = () => {
                 >
                   Submit
                 </button>
-
               </form>
             </div>
           </div>
