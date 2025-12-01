@@ -28,9 +28,11 @@ const ProfilePage = () => {
             <div className="bg-[#3b44ff] px-6 py-5 flex items-center gap-4">
               <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center">
                 <img
-                  src={"/profile-img.png"}
+                  src={preview ? preview : "/profile-img.png"}
                   alt="Profile"
-                  className="object-contain w-10 h-10"
+                  className={`object-contain ${
+                    preview ? " w-full h-full rounded-full" : "w-10 h-10 "
+                  } `}
                 />
               </div>
               <div className="text-white">
