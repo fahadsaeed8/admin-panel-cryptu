@@ -429,7 +429,9 @@ const DashboardPage: React.FC = () => {
                     {item.value}
                   </p>
                 </div>
-                <div className={`${item.color} w-12 h-12 rounded-lg flex items-center justify-center text-xl`}>
+                <div
+                  className={`${item.color} w-12 h-12 rounded-lg flex items-center justify-center text-xl`}
+                >
                   {item.icon}
                 </div>
               </div>
@@ -440,7 +442,9 @@ const DashboardPage: React.FC = () => {
 
       {/* Withdrawals Section */}
       <div className="mb-8">
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Withdrawals</h2>
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          Withdrawals
+        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             {
@@ -479,7 +483,9 @@ const DashboardPage: React.FC = () => {
                     {item.value}
                   </p>
                 </div>
-                <div className={`${item.color} w-12 h-12 rounded-lg flex items-center justify-center text-xl`}>
+                <div
+                  className={`${item.color} w-12 h-12 rounded-lg flex items-center justify-center text-xl`}
+                >
                   {item.icon}
                 </div>
               </div>
@@ -603,7 +609,10 @@ const DashboardPage: React.FC = () => {
         </div>
         <LoginStats />
       </div>
-      <CronJobModal isOpen={isCronModalOpen} onClose={() => setIsCronModalOpen(false)} />
+      <CronJobModal
+        isOpen={isCronModalOpen}
+        onClose={() => setIsCronModalOpen(false)}
+      />
     </DashboardLayout>
   );
 };

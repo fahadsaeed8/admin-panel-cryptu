@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Pencil, Search, X } from "lucide-react";
 import DashboardLayout from "@/components/latest-dashboardLayout/dashboardlayout";
 import Table from "@/components/table/table";
+import { useRouter } from "next/navigation";
 
 type Trade = {
   user: string;
@@ -22,7 +23,7 @@ const initialTrades: Trade[] = [
     username: "abhishekkumar",
     crypto: "BTC",
     amount: "INR 1,000.00",
-    inTime: "2025-08-31T09:18",
+    inTime: "2025-08-31T 09:18 AM",
     highLow: "UP",
     result: "Loss",
     status: "Completed",
@@ -32,7 +33,7 @@ const initialTrades: Trade[] = [
     username: "amoghkhairav",
     crypto: "BTC",
     amount: "INR 600.00",
-    inTime: "2025-08-31T07:32",
+    inTime: "2025-08-31T 07:32 AM",
     highLow: "UP",
     result: "Loss",
     status: "Completed",
@@ -42,7 +43,7 @@ const initialTrades: Trade[] = [
     username: "sivagnanavathisingh",
     crypto: "BTS",
     amount: "INR 5,000.00",
-    inTime: "2025-08-30T17:03",
+    inTime: "2025-08-30T 17:03 AM",
     highLow: "UP",
     result: "Win",
     status: "Completed",
@@ -50,13 +51,16 @@ const initialTrades: Trade[] = [
 ];
 
 const TradeLogAll = () => {
+  const router = useRouter();
+
   const [trades, setTrades] = useState<Trade[]>(initialTrades);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editTrade, setEditTrade] = useState<Trade | null>(null);
   const [editIndex, setEditIndex] = useState<number | null>(null);
 
-  // Open modal for editing
-  const handleEdit = (trade: Trade, index: number) => {
+  // Open modal for editing (use index to retrieve full original trade with username)
+  const handleEdit = (index: number) => {
+    const trade = trades[index];
     setEditTrade({ ...trade });
     setEditIndex(index);
     setIsModalOpen(true);
@@ -108,10 +112,29 @@ const TradeLogAll = () => {
         <div className="overflow-x-auto">
           <div className="min-w-[1000px]">
             <Table
-              trades={trades}
+              trades={trades.map((t) => {
+                const { username, ...rest } = t as any;
+                return {
+                  ...rest,
+                  user: (
+                    <div className="flex flex-col">
+                      <span className="font-semibold">{t.user}</span>
+                      <span
+                        className="text-xs text-blue-600 font-semibold cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          router.push(`/admin/users/${username}`);
+                        }}
+                      >
+                        {username}
+                      </span>
+                    </div>
+                  ),
+                } as Record<string, any>;
+              })}
               actionRenderer={(row, index) => (
                 <button
-                  onClick={() => handleEdit(row as Trade, index)}
+                  onClick={() => handleEdit(index)}
                   className="flex items-center gap-1 text-[#2d33ff] border border-[#2d33ff] px-3 py-1.5 rounded-md text-xs font-medium hover:bg-[#2d33ff] hover:text-white transition cursor-pointer"
                 >
                   <Pencil size={14} /> Edit
@@ -295,5 +318,4 @@ const TradeLogAll = () => {
     </DashboardLayout>
   );
 };
-
 export default TradeLogAll;

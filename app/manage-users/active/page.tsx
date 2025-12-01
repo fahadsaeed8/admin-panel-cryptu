@@ -31,8 +31,8 @@ const users: User[] = [
     name: "Praween Khatoon",
     username: "praweenkhatoon",
     email: "cutegamer609@gmail.com",
-    mobile: "",
-    country: "",
+    mobile: "91",
+    country: "IN",
     joinedAt: "2025-11-10 10:14 AM",
     timeAgo: "6 hours ago",
     balance: "INR 0.00",
@@ -50,11 +50,32 @@ const ActiveUserPage = () => {
         </div>
 
         <Table
-          trades={users}
-          actionRenderer={(user) => (
+          trades={users.map((u) => ({
+            user: (
+              <div className="flex flex-col">
+                <span className="font-semibold text-gray-800">{u.name}</span>
+                <span className="text-xs text-blue-600 font-semibold cursor-pointer">@{u.username}</span>
+              </div>
+            ),
+            emailMobile: (
+              <div className="flex flex-col text-xs text-gray-600">
+                <span>{u.email}</span>
+                <span>{u.mobile}</span>
+              </div>
+            ),
+            country: u.country || "",
+            joinedAt: (
+              <div className="flex flex-col text-xs text-gray-600">
+                <span>{u.joinedAt}</span>
+                <span>{u.timeAgo}</span>
+              </div>
+            ),
+            balance: u.balance,
+          }))}
+          actionRenderer={(_row, index) => (
             <button
               onClick={() =>
-                router.push(`/manage-users/active/${user.username}`)
+                router.push(`/manage-users/active/${users[index].username}`)
               }
               className="border border-indigo-600 text-indigo-600 px-3 py-1 rounded-md hover:bg-indigo-600 hover:text-white transition text-sm"
             >
