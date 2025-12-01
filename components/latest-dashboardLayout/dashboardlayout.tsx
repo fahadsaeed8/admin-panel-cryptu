@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 import { usePathname } from "next/navigation";
 import {
   Search,
@@ -19,6 +21,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
+  const user = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     // Auto-open any dropdown that matches the current path
@@ -184,9 +187,20 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 }))
               }
             >
-              <UserCircle size={28} className="text-white" />
+              {/* <UserCircle size={28} className="text-white" /> */}
+              {user.image ? (
+                <img
+                  src={user.image}
+                  alt="Profile"
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+              ) : (
+                <UserCircle size={28} className="text-white" />
+              )}
+
               <span className="text-sm font-medium hidden md:block text-white">
-                admin
+                {/* admin */}
+                {user.name}
               </span>
             </div>
 

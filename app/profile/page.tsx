@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import DashboardLayout from "@/components/latest-dashboardLayout/dashboardlayout";
+import { useDispatch } from "react-redux";
+import { updateUser } from "@/redux/userSlice";
 
 const ProfilePage = () => {
   const [name, setName] = useState("Super Admin");
@@ -15,6 +17,22 @@ const ProfilePage = () => {
     const reader = new FileReader();
     reader.onload = (ev) => setPreview(ev.target?.result as string);
     reader.readAsDataURL(file);
+  };
+
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    dispatch(
+      updateUser({
+        name,
+        email,
+        image: preview ? preview : "/profile-img.png",
+      })
+    );
+
+    alert("Profile Updated!");
   };
 
   return (
@@ -76,7 +94,7 @@ const ProfilePage = () => {
                 Profile Information
               </h2>
 
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* IMAGE */}
                   <div>
@@ -140,7 +158,7 @@ const ProfilePage = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-3 rounded-md bg-[#3b44ff] hover:bg-[#2d36d0] text-white text-sm font-semibold"
+                  className="w-full py-3 cursor-pointer rounded-md bg-[#3b44ff] hover:bg-[#2d36d0] text-white text-sm font-semibold"
                 >
                   Submit
                 </button>
