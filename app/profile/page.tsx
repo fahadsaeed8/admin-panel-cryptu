@@ -30,9 +30,7 @@ const ProfilePage = () => {
           <div className="bg-white rounded-xl shadow-md w-[300px]">
             <div className="bg-[#3b44ff] px-6 py-5 flex items-center gap-4">
               <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center">
-                <div className="w-10 h-10 rounded-full bg-[#001547] flex items-center justify-center">
-                  <span className="text-white text-xl font-bold">✓</span>
-                </div>
+                <img src="/icons/tickicon.png" alt="tick icon" />
               </div>
               <div className="text-white">
                 <p className="text-lg font-semibold leading-tight">Super</p>
