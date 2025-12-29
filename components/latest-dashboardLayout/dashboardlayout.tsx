@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { usePathname } from "next/navigation";
@@ -54,10 +55,10 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       >
         {/* Logo */}
         <div className="flex items-center justify-between px-4 py-4 border-b border-[#2d336f]">
-          <div className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-2 cursor-pointer hover:opacity-80 transition-opacity">
             <img src="/cryptoo.png" alt="logo" className="h-8 w-auto" />
             <span className="font-semibold text-sm">Cryptostock</span>
-          </div>
+          </Link>
           {/* Close button (mobile) */}
           <button
             className="md:hidden text-white"
